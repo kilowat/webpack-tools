@@ -1,8 +1,12 @@
 import jQuery from "jquery";
 import Vue from 'vue';
 import axios from 'axios';
-window.axios = axios;
+import PrettyCheckbox from 'pretty-checkbox-vue';
 import SmartFilter from '../vue-components/SmartFilter.vue';
+
+window.axios = axios;
+
+Vue.use(PrettyCheckbox);
 
 Vue.component('smart-filter', SmartFilter );
 

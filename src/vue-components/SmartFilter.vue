@@ -39,11 +39,14 @@
           <div v-else-if="item.DISPLAY_TYPE == 'B'"><!--//NUMBERS-->
 
           </div>
-          <div class="filter-item-wrapper checkboxes-with-picture" v-else-if="item.DISPLAY_TYPE == 'G'"><!--//CHECKBOXES_WITH_PICTURES-->
+          <div 
+            class="filter-item-wrapper checkboxes-with-picture" 
+            v-bind:class="{hidden_item : item.DISPLAY_EXPANDED == 'Y'}"
+            v-else-if="item.DISPLAY_TYPE == 'G'"><!--//CHECKBOXES_WITH_PICTURES-->
             <div class="filter-row item-name">
-              {{ item.NAME }}:
+              <span class="toggle-link" @click="toggleProp($event)">{{ item.NAME }}</span>
             </div>
-            <div class="filter-value-list">
+            <div class="filter-value-list drop-down">
               <div class="filter-row checkbox-row" v-for="propItem in item.VALUES" :key="propItem.CONTROL_ID">
                 <input
                       type="checkbox"
@@ -54,6 +57,7 @@
                       @change="updateData()"
                     />
                 <label
+                  :class="{ active : propItem.CHECKED }"
                   :disabled="propItem.DISABLED" 
                   :for="propItem.CONTROL_ID"
                   :data-role="'label_'+propItem.CONTROL_ID"
@@ -61,12 +65,12 @@
                   <span class="filter-input-picture">
                     <span class="filter-param-btn color-sl">
                       <!--if (isset($ar["FILE"]) && !empty($ar["FILE"]["SRC"]))-->
-                      <span v-if="propItem" class="filter-btn-color-icon" :style="'background-image:url('+propItem.FILE.SRC+');'"></span>
+                      <span v-if="propItem.FILE != undefined && propItem.FILE.SRC.length > 0" class="filter-btn-color-icon" :style="'background-image:url('+propItem.FILE.SRC+');'"></span>
                     </span>                   
-                    <span class="item-count" v-if="arParams.DISPLAY_ELEMENT_COUNT !== 'N' && propItem.ELEMENT_COUNT != undefined">
+                  </span>
+                  <span class="item-count" v-if="arParams.DISPLAY_ELEMENT_COUNT !== 'N' && propItem.ELEMENT_COUNT != undefined">
                       ({{ propItem.ELEMENT_COUNT }})
                     </span>
-                  </span>
                 </label>
               </div>
             </div>
@@ -86,11 +90,14 @@
           <div v-else-if="item.DISPLAY_TYPE == 'U'"><!--//CALENDAR-->
 
           </div>        
-          <div class="filter-item-wrapper checkboxes" v-else> <!--//CHECKBOXES-->
+          <div 
+            class="filter-item-wrapper checkboxes"
+            v-bind:class="{hidden_item : item.DISPLAY_EXPANDED == 'Y'}" 
+            v-else-if="item.VALUES.length !== 0"> <!--//CHECKBOXES-->
             <div class="filter-row item-name">
-              {{ item.NAME }}:
+              <span class="toggle-link" @click="toggleProp($event)">{{ item.NAME }}</span>
             </div>
-            <div class="filter-value-list">
+            <div class="filter-value-list drop-down">
               <div class="filter-row checkbox-row" v-for="propItem in item.VALUES" :key="propItem.CONTROL_ID">
                 <label
                   :disabled="propItem.DISABLED" 
@@ -98,8 +105,9 @@
                   :data-role="'label_'+propItem.CONTROL_ID"
                   >
                   <span class="filter-input-checkbox">
-                    <input
+                    <p-check
                       type="checkbox"
+                      color="success"
                       :value="propItem.HTML_VALUE"
                       :name="propItem.CONTROL_NAME"
                       :id="propItem.CONTROL_ID"
@@ -118,7 +126,7 @@
         </div>
       </div>
       <div class="button-row">
-        <button type="button" name="setFilter" @click="setFilter">Кнопка</button>
+        <button type="button" v-bind:disabled="loading" name="setFilter" @click="setFilter">Применить</button>
       </div>
     </form>
   </div>
@@ -150,11 +158,12 @@ export default {
       arParams: params,
       price: price,
       valuePrice: [curMinPrice, curMaxPrice],
+      loading: false,
     }
   },
   props: ['result_json', 'param_json'],
   components: {
-    VueSlider    
+    VueSlider,    
   },
   created(){
     console.log(this.arResult);
@@ -207,16 +216,24 @@ export default {
         params+="&"+name+"="+value;
       });
 
+      this.loading = true;
+
       axios({
         method: 'get',
         url: this.arResult.FILTER_AJAX_URL + params,
       })
       .then((response)=>{
           this.arResult = response.data;
+          this.loading = false;
       })
       .catch((response)=>{
           console.log(response);
+          this.loading = false;
       }); 
+    },
+    toggleProp(e){
+      let $el = $(e.target);
+      $el.parent().next().slideToggle();
     }
   }
 };
@@ -251,5 +268,56 @@ export default {
   }
   .price-slider{
     width: calc(100% - 125px);
+  }
+  .filter-btn-color-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-position: center;
+    background-size: cover;
+    border: 1px solid #ccc;
+  }
+  .filter-input-picture {
+    height: 28px;
+    display: inline-block;
+  }
+  .checkboxes-with-picture label .filter-input-picture{
+    border: 2px solid #ccc;
+    cursor: pointer;
+  }
+  .checkboxes-with-picture label.active .filter-input-picture{
+    border: 2px solid red;
+  }
+  .checkboxes-with-picture input{
+    display: none;
+  }
+  .item-count {
+    font-size: 14px;
+    color: gray;
+  }
+  .toggle-link {
+    border-bottom: 1px dashed;
+    cursor: pointer;
+  }
+  .toggle-link:hover{
+    color: blue;
+  }
+  .drop-down{
+    display: none;;
+  }
+    /* always present */
+  .expand-transition {
+    transition: all .3s ease;
+    height: 30px;
+    padding: 10px;
+    background-color: #eee;
+    overflow: hidden;
+  }
+  /* .expand-enter defines the starting state for entering */
+  /* .expand-leave defines the ending state for leaving */
+  .expand-enter, .expand-leave {
+    height: 0;
+    padding: 0 10px;
+    opacity: 0;
   }
 </style>
