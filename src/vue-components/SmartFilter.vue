@@ -8,12 +8,12 @@
         :value="input.HTML_VALUE">
       <div class="filter-items-list">
         <!--price-->
-        <div class="filter-item">
+        <div class="filter-item" v-if="price">
           <div class="filter-item-wrapper">
-            <div class="filter-row item-name">Цена:</div>
-            <div class="filter-row price-row" v-if="price">
+            <div class="filter-row item-name">Цена</div>
+            <div class="filter-row price-row">
               <div class="price-input left-input">
-                <input type="text" :name="price.VALUES.MIN.CONTROL_NAME" v-model="valuePrice[0]" @change="updateData()">
+                <input type="text" class="input" :name="price.VALUES.MIN.CONTROL_NAME" v-model="valuePrice[0]" @change="updateData()">
               </div>
               <div class="price-slider">
                 <vue-slider 
@@ -26,25 +26,25 @@
                 </vue-slider>
               </div>
               <div class="price-input right-input">
-                <input type="text" :name="price.VALUES.MAX.CONTROL_NAME" v-model="valuePrice[1]" @change="updateData()">
+                <input type="text" class="input" :name="price.VALUES.MAX.CONTROL_NAME" v-model="valuePrice[1]" @change="updateData()">
               </div>
             </div>
           </div>
         </div>
         <!--end price-->
         <div class="filter-item" v-for="item in arResult.ITEMS" :key="item.ID">
-          <div v-if="item.DISPLAY_TYPE == 'A'"><!--//NUMBERS_WITH_SLIDER-->
+          <div v-if="item.DISPLAY_TYPE == 'A' && item.VALUES.length !== 0"><!--//NUMBERS_WITH_SLIDER-->
 
           </div>
-          <div v-else-if="item.DISPLAY_TYPE == 'B'"><!--//NUMBERS-->
+          <div v-else-if="item.DISPLAY_TYPE == 'B' && item.VALUES.length !== 0"><!--//NUMBERS-->
 
           </div>
           <div 
             class="filter-item-wrapper checkboxes-with-picture" 
-            v-bind:class="{hidden_item : item.DISPLAY_EXPANDED == 'Y'}"
-            v-else-if="item.DISPLAY_TYPE == 'G'"><!--//CHECKBOXES_WITH_PICTURES-->
+            v-bind:class="{opened : item.DISPLAY_EXPANDED == 'Y'}"
+            v-else-if="item.DISPLAY_TYPE == 'G' && item.VALUES.length !== 0"><!--//CHECKBOXES_WITH_PICTURES-->
             <div class="filter-row item-name">
-              <span class="toggle-link" @click="toggleProp($event)">{{ item.NAME }}</span>
+              <span class="toggle-link" @click="toggleProp($event)">{{ item.NAME }} <i class="toggle-arrow"></i></span>
             </div>
             <div class="filter-value-list drop-down">
               <div class="filter-row checkbox-row" v-for="propItem in item.VALUES" :key="propItem.CONTROL_ID">
@@ -75,27 +75,27 @@
               </div>
             </div>
           </div>
-          <div v-else-if="item.DISPLAY_TYPE == 'H'"><!--//CHECKBOXES_WITH_PICTURES_AND_LABELS-->
+          <div v-else-if="item.DISPLAY_TYPE == 'H' && item.VALUES.length !== 0"><!--//CHECKBOXES_WITH_PICTURES_AND_LABELS-->
 
           </div>
-          <div v-else-if="item.DISPLAY_TYPE == 'P'"><!--//DROPDOWN-->
+          <div v-else-if="item.DISPLAY_TYPE == 'P' && item.VALUES.length !== 0"><!--//DROPDOWN-->
 
           </div>
-          <div v-else-if="item.DISPLAY_TYPE == 'R'"><!--//DROPDOWN_WITH_PICTURES_AND_LABELS-->
+          <div v-else-if="item.DISPLAY_TYPE == 'R' && item.VALUES.length !== 0"><!--//DROPDOWN_WITH_PICTURES_AND_LABELS-->
 
           </div>
-          <div v-else-if="item.DISPLAY_TYPE == 'K'"><!--//RADIO_BUTTONS-->
+          <div v-else-if="item.DISPLAY_TYPE == 'K' && item.VALUES.length !== 0"><!--//RADIO_BUTTONS-->
 
           </div>     
-          <div v-else-if="item.DISPLAY_TYPE == 'U'"><!--//CALENDAR-->
+          <div v-else-if="item.DISPLAY_TYPE == 'U' && item.VALUES.length !== 0"><!--//CALENDAR-->
 
           </div>        
           <div 
             class="filter-item-wrapper checkboxes"
-            v-bind:class="{hidden_item : item.DISPLAY_EXPANDED == 'Y'}" 
+            v-bind:class="{opened : item.DISPLAY_EXPANDED == 'Y'}" 
             v-else-if="item.VALUES.length !== 0"> <!--//CHECKBOXES-->
             <div class="filter-row item-name">
-              <span class="toggle-link" @click="toggleProp($event)">{{ item.NAME }}</span>
+              <span class="toggle-link" @click="toggleProp($event)">{{ item.NAME }} <i class="toggle-arrow"></i></span>
             </div>
             <div class="filter-value-list drop-down">
               <div class="filter-row checkbox-row" v-for="propItem in item.VALUES" :key="propItem.CONTROL_ID">
@@ -126,7 +126,8 @@
         </div>
       </div>
       <div class="button-row">
-        <button type="button" v-bind:disabled="loading" name="setFilter" @click="setFilter">Применить</button>
+        <button type="button" v-bind:disabled="loading" name="set_filter" @click="setFilter">Применить</button>
+        <button type="button" v-bind:disabled="loading" name="del_filter" @click="resetFilter">Сбросить</button>
       </div>
     </form>
   </div>
@@ -150,9 +151,10 @@ export default {
         break;
       }
     }
+
     let curMinPrice = price.VALUES.MIN.HTML_VALUE ? parseInt(price.VALUES.MIN.HTML_VALUE) : price.VALUES.MIN.VALUE;
     let curMaxPrice = price.VALUES.MAX.HTML_VALUE ? parseInt(price.VALUES.MAX.HTML_VALUE) : price.VALUES.MAX.VALUE;
-    curMinPrice = 400;
+ 
     return {
       arResult:res,
       arParams: params,
@@ -184,6 +186,11 @@ export default {
         markArr.push(this.priceRangeInterval * i);
       }
       return markArr;
+    },
+    delLink(){
+      let link = this.arParams.SEF_RULE.replace("#SECTION_CODE_PATH#", this.arParams.SECTION_CODE_PATH);
+      link = link.replace("#SMART_FILTER_PATH#", "clear");
+      return link;
     }
   },
   mounted(){
@@ -208,7 +215,13 @@ export default {
     setFilter(){
       location.href = this.arResult.FILTER_URL;
     },
+    resetFilter(){
+      location.href = this.delLink;
+    },
     updateData(){
+      
+      if(this.loading) return false;
+
       let formData = new FormData(document.getElementById('filter-form'));
       let params = "?ajax=y";
 
@@ -233,7 +246,15 @@ export default {
     },
     toggleProp(e){
       let $el = $(e.target);
-      $el.parent().next().slideToggle();
+      let $parent = $el.parent();
+      let $next = $parent.next();
+      $next.slideToggle(()=>{
+        if($next.is(":visible")){
+          $el.parent().parent().addClass('opened')
+        }else{
+          $el.parent().parent().removeClass('opened')
+        }
+      });
     }
   }
 };
@@ -241,6 +262,9 @@ export default {
 </script>
 
 <style scoped >
+  .vue-slider{
+    margin-top: 8px;
+  }
   .item-name{
     font-weight:600;
     margin-bottom:5px;
@@ -258,7 +282,7 @@ export default {
     padding-bottom: 10px;
   }
   .price-input input{
-    width: 50px;
+    width: 60px;
   }
   .price-input.left-input{
     margin-right: 10px;
@@ -267,7 +291,7 @@ export default {
     margin-left: 15px;
   }
   .price-slider{
-    width: calc(100% - 125px);
+    width: calc(100% - 145px);
   }
   .filter-btn-color-icon {
     width: 24px;
@@ -299,8 +323,44 @@ export default {
     border-bottom: 1px dashed;
     cursor: pointer;
   }
+  .toggle-arrow{
+    position: relative;
+  }
+  .toggle-arrow:after{
+    display: block;
+    content: "";
+    position:absolute;
+    right: -15px;
+    top: 10px;
+    width: 10px;
+    height: 1px;
+    background-color: black;
+    transform: rotate(45deg);
+    z-index: 1;
+  }
+  .toggle-arrow::before{
+    display: block;
+    content: "";
+    position:absolute;
+    right: -22px;
+    top: 10px;
+    width: 10px;
+    height: 1px;
+    background-color: black;
+    transform: rotate(-45deg);
+    z-index: 1;
+  }
+  .opened .toggle-arrow::before{
+    transform: rotate(45deg);
+  }
+  .opened .toggle-arrow::after{
+    transform: rotate(-45deg);
+  }
   .toggle-link:hover{
     color: blue;
+  }
+  .opened .drop-down{
+    display:block;
   }
   .drop-down{
     display: none;;

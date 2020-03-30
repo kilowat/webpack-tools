@@ -1,12 +1,4 @@
-@import 'icons';
-@import "variable";
-@import "~normalize.css";
-@import "~breakpoint-sass";
-@import '~pretty-checkbox/src/pretty-checkbox.scss';
-@import "header";
-@import "footer";
-@import "sidebar";
-@import "demo"; //demo styles
+@import "boot";
 
 $font-stack: -apple-system, BlinkMacSystemFont, Roboto, "Open Sans", "Helvetica Neue", sans-serif;
 
