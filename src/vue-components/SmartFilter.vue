@@ -136,14 +136,16 @@
 <script>
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
+import CatalogList from './CatalogList';
 
 export default {
   name: 'smart-filter',
   data(){
     let price = false;
     let res = JSON.parse(this.result_json);
-    let params = JSON.parse(this.param_json);
-
+    
+    let params = JSON.parse(this.params_json);
+   
     for(let index in res.ITEMS){
       if(res.ITEMS[index].PRICE != undefined)
       {
@@ -163,12 +165,12 @@ export default {
       loading: false,
     }
   },
-  props: ['result_json', 'param_json'],
+  props: ['result_json', 'params_json'],
   components: {
     VueSlider,    
   },
   created(){
-    console.log(this.arResult);
+    
   },
   computed:{
     minPriceRange(){
@@ -191,7 +193,7 @@ export default {
       let link = this.arParams.SEF_RULE.replace("#SECTION_CODE_PATH#", this.arParams.SECTION_CODE_PATH);
       link = link.replace("#SMART_FILTER_PATH#", "clear");
       return link;
-    }
+    },
   },
   mounted(){
   
@@ -200,10 +202,18 @@ export default {
 
   },
   methods:{
+    getFormParams(){
+      let formData = new FormData(document.getElementById('filter-form'));
+      let params = "";
+
+      formData.forEach((value, name)=>{
+        params+="&"+name+"="+value;
+      });
+      return params;
+    },
     dragStart(){
       this.selectedMinPrice = this.$refs.slider.currentValue[0]
       this.selectedMaxPrice = this.$refs.slider.currentValue[1]
-      console.log(this.$refs.slider.currentValue);
     },
     onPriceError(type, message){
       if(type == 3 || type == 4)
@@ -213,27 +223,22 @@ export default {
       }
     },
     setFilter(){
-      location.href = this.arResult.FILTER_URL;
+      //location.href = this.arResult.FILTER_URL;
+      EventBus.$emit('set-filter', this.arResult.FILTER_URL);
+
     },
     resetFilter(){
       location.href = this.delLink;
     },
     updateData(){
-      
       if(this.loading) return false;
 
-      let formData = new FormData(document.getElementById('filter-form'));
-      let params = "?ajax=y";
-
-      formData.forEach((value, name)=>{
-        params+="&"+name+"="+value;
-      });
-
       this.loading = true;
+      let params = '?ajax=y' + this.getFormParams();
 
       axios({
         method: 'get',
-        url: this.arResult.FILTER_AJAX_URL + params,
+        url: this.arParams.FILTER_AJAX_URL + params,
       })
       .then((response)=>{
           this.arResult = response.data;
