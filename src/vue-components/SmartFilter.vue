@@ -1,5 +1,6 @@
 <template>
   <div class="smart-filter">
+    <loading :active.sync="loading" :is-full-page="false"></loading>
     <form name="smart-filter" id="filter-form" ref="form" :action="arResult.FORM_ACTION" method="get" class="smart-filter-form">
       <input type="hidden" v-for="input in arResult.HIDDEN" 
         :key="input.ID" 
@@ -138,6 +139,9 @@ import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 import CatalogList from './CatalogList';
 
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 export default {
   name: 'smart-filter',
   data(){
@@ -167,7 +171,8 @@ export default {
   },
   props: ['result_json', 'params_json'],
   components: {
-    VueSlider,    
+    VueSlider,
+    Loading    
   },
   created(){
     
@@ -245,7 +250,6 @@ export default {
           this.loading = false;
       })
       .catch((response)=>{
-          console.log(response);
           this.loading = false;
       }); 
     },

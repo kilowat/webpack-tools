@@ -5,8 +5,10 @@ import PrettyCheckbox from 'pretty-checkbox-vue';
 import SmartFilter from '../vue-components/SmartFilter.vue';
 import CatalogList from '../vue-components/CatalogList.vue';
 
+
 window.axios = axios;
 window.EventBus = new Vue();
+
 Vue.use(PrettyCheckbox);
 
 Vue.component('smart-filter', SmartFilter );
