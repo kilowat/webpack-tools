@@ -13,7 +13,7 @@
     "axios": "^0.19.2",
     "breakpoint-sass": "^2.7.1",
     "html5-history-api": "^4.2.10",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "normalize.css": "^8.0.1",
     "popper.js": "^1.16.1",
     "pretty-checkbox-vue": "^1.1.9",
