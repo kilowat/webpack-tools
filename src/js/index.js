@@ -1,11 +1,11 @@
 import jQuery from "jquery";
 import Vue from 'vue';
-import axios from 'axios';
+import Axios from 'axios';
 import PrettyCheckbox from 'pretty-checkbox-vue';
 import ExampleComponent from '../vue-components/ExampleComponent.vue';
 
 
-window.axios = axios;
+window.Axios = Axios;
 window.EventBus = new Vue();
 
 Vue.use(PrettyCheckbox);
