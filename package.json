@@ -10,7 +10,7 @@
     "prod": "cross-env NODE_ENV=production webpack --mode production && prettier --print-width=120 --parser html --write dist/*.html"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "breakpoint-sass": "^2.7.1",
     "html5-history-api": "^4.2.10",
     "jquery": "^3.4.1",
