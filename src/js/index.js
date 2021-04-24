@@ -1,4 +1,3 @@
-import jQuery from "jquery";
 import Vue from 'vue';
 import Axios from 'axios';
 import PrettyCheckbox from 'pretty-checkbox-vue';
@@ -17,7 +16,3 @@ const vue_app = new Vue({
 });
 
 window.vue_app = vue_app;
-
-jQuery(function() {
-  //jQuery("body").css("color", "blue");
-});

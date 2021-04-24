@@ -18,8 +18,8 @@ $sprite-smarthome-width: 32px;
 $sprite-smarthome-height: 32px;
 $sprite-smarthome-total-width: 32px;
 $sprite-smarthome-total-height: 32px;
-$sprite-smarthome-image: '/sprites/sprite.png?hash=9e0eb9fbe82ba13210cd149db886af36';
-$sprite-smarthome: (0px, 0px, 0px, 0px, 32px, 32px, 32px, 32px, '/sprites/sprite.png?hash=9e0eb9fbe82ba13210cd149db886af36', 'sprite-smarthome', );
+$sprite-smarthome-image: 'sprites/sprite.png?hash=9e0eb9fbe82ba13210cd149db886af36';
+$sprite-smarthome: (0px, 0px, 0px, 0px, 32px, 32px, 32px, 32px, 'sprites/sprite.png?hash=9e0eb9fbe82ba13210cd149db886af36', 'sprite-smarthome', );
 $retina-sprite-smarthome-name: 'retina_sprite-smarthome';
 $retina-sprite-smarthome-x: 0px;
 $retina-sprite-smarthome-y: 0px;
@@ -29,18 +29,18 @@ $retina-sprite-smarthome-width: 64px;
 $retina-sprite-smarthome-height: 64px;
 $retina-sprite-smarthome-total-width: 64px;
 $retina-sprite-smarthome-total-height: 64px;
-$retina-sprite-smarthome-image: '/sprites/sprite@2x.png?hash=dbb9a58115234a06f04dc72848630115';
-$retina-sprite-smarthome: (0px, 0px, 0px, 0px, 64px, 64px, 64px, 64px, '/sprites/sprite@2x.png?hash=dbb9a58115234a06f04dc72848630115', 'retina_sprite-smarthome', );
+$retina-sprite-smarthome-image: 'sprites/sprite@2x.png?hash=dbb9a58115234a06f04dc72848630115';
+$retina-sprite-smarthome: (0px, 0px, 0px, 0px, 64px, 64px, 64px, 64px, 'sprites/sprite@2x.png?hash=dbb9a58115234a06f04dc72848630115', 'retina_sprite-smarthome', );
 $spritesheet-width: 32px;
 $spritesheet-height: 32px;
-$spritesheet-image: '/sprites/sprite.png?hash=9e0eb9fbe82ba13210cd149db886af36';
+$spritesheet-image: 'sprites/sprite.png?hash=9e0eb9fbe82ba13210cd149db886af36';
 $spritesheet-sprites: ($sprite-smarthome, );
-$spritesheet: (32px, 32px, '/sprites/sprite.png?hash=9e0eb9fbe82ba13210cd149db886af36', $spritesheet-sprites, );
+$spritesheet: (32px, 32px, 'sprites/sprite.png?hash=9e0eb9fbe82ba13210cd149db886af36', $spritesheet-sprites, );
 $retina-spritesheet-width: 64px;
 $retina-spritesheet-height: 64px;
-$retina-spritesheet-image: '/sprites/sprite@2x.png?hash=dbb9a58115234a06f04dc72848630115';
+$retina-spritesheet-image: 'sprites/sprite@2x.png?hash=dbb9a58115234a06f04dc72848630115';
 $retina-spritesheet-sprites: ($retina-sprite-smarthome, );
-$retina-spritesheet: (64px, 64px, '/sprites/sprite@2x.png?hash=dbb9a58115234a06f04dc72848630115', $retina-spritesheet-sprites, );
+$retina-spritesheet: (64px, 64px, 'sprites/sprite@2x.png?hash=dbb9a58115234a06f04dc72848630115', $retina-spritesheet-sprites, );
 
 // These "retina group" variables are mappings for the naming and pairing of normal and retina sprites.
 //

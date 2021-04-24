@@ -1,5 +1,8 @@
 <template>
-    <div>
+    <div class="example-component">
+      <div class="example-component-name">
+        Component name
+      </div>
       ExampleComponent
     </div>
 </template>
@@ -10,6 +13,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+  .example-component-name{
+    color: green;
+  }
 </style>
