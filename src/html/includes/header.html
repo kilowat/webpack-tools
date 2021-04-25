@@ -2,6 +2,8 @@
     var show_sidebar;
     var title;
     var sidebar_html;
+    var styleBundle;
+    var jsBundle;
 %>
 <!DOCTYPE html>
 <html lang="ru">
@@ -10,8 +12,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="Text"/>
     <link rel="shortcut icon" href="favicon/favicon.ico" />
-    <link rel="stylesheet" href="/css/style.bundle.css" >
-    <link rel="preload" href="../fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="stylesheet" href="/css/main.bundle.css" />
+    <%if(styleBundle){%>
+        <link rel="stylesheet" href="/css/<%=styleBundle%>" />
+    <%}%>
+    <!--<link rel="preload" href="../fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin>-->
     <title><%=title%></title>
   </head>
   <body>
@@ -31,10 +36,10 @@
               <nav>
                   <ul>
                       <li>
-                          <a href="/index.html" title="Главная">Главная</a>
+                          <a style="font-size: 22px;margin:15px" href="/index.html" title="Главная">Главная</a>
                       </li>
                       <li>
-                          <a href="/second-page.html" title="Second page">Second page</a>
+                          <a style="font-size: 22px;margin:15px" href="/second-page.html" title="Second page">Second page</a>
                       </li>
                   </ul>
               </nav>

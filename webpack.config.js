@@ -8,20 +8,8 @@ const isDev = process.env.NODE_ENV === 'development';
 const SVGSpritemapPlugin = require('svg-spritemap-webpack-plugin');
 const SvgSpriteHtmlWebpackPlugin = require('svg-sprite-html-webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
-const autoprefixer = require("autoprefixer");
 const TerserPlugin = require("terser-webpack-plugin");
-
-const cssNano = require("cssnano")({
-  preset: [
-    "default",
-    {
-      discardComments: {
-        removeAll: true
-      }
-    }
-  ]
-});
-
+const templateName = path.resolve(__dirname, '..').split(path.sep).pop();
 /*sprites path settings*/
 const svgPath = '/sprites/spritemap.svg';
 
@@ -46,18 +34,24 @@ function generateHtmlPlugins(templateDir) {
 const htmlPlugins = generateHtmlPlugins("./src/html/views");
 
 const config = {
-  entry: ["./src/js/index.js", "./src/scss/style.scss"],
+  entry: {
+    main: ["./src/js/main.js", "./src/scss/main.scss"],
+    home: ["./src/js/home.js", "./src/scss/home.scss"]
+  },
   output: {
-    filename: "./js/bundle.js",
+    filename: "./js/[name].bundle.js",
+    //publicPath : `/local/templates/${templateName}/assets/dist/`,
     clean: true,
   },
   devtool: isDev ? "source-map" : false,
   mode: isDev ? "development": "production",
   optimization: {
     minimize: !isDev,
+    runtimeChunk: 'single',
     minimizer: [
       new TerserPlugin(
         {
+          extractComments: true,
           terserOptions: {
             sourceMap: isDev,
           },
@@ -102,15 +96,8 @@ const config = {
             loader: "postcss-loader",
             options: {
               postcssOptions: {
-                plugins: () => {
-                  let p = [
-                    autoprefixer,
-                  ];
-                  if (!isDev) {
-                    p.push(cssNano);
-                  }
-                  return p;
-                },
+                plugins: [,
+                ],
                 sourceMap: isDev,
               },
             },
@@ -155,7 +142,7 @@ const config = {
       }
     }),
     new MiniCssExtractPlugin({
-      filename: "./css/style.bundle.css",
+      filename: "css/[name].bundle.css",
     }),
     new CopyWebpackPlugin({
       patterns: [
@@ -185,7 +172,7 @@ if (!isDev) {
     new CompressionPlugin({
       filename: "[path][base].gz",
       algorithm: 'gzip',
-      test: new RegExp('\\.(js|css)$'),
+      test: /\.js$|\.css$$/,
       threshold: 10240,
       minRatio: 1
     }));

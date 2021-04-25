@@ -8,8 +8,12 @@
 </template>
 
 <script>
+
 export default {
     name: "example-component",
+    mounted(){
+      console.log('example mounted');
+    },
 }
 </script>
 
