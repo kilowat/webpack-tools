@@ -1,6 +1,6 @@
 {
   "name": "webpack-tools",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "HTML template",
   "main": "src/index.js",
   "scripts": {
@@ -8,28 +8,33 @@
     "dev": "cross-env NODE_ENV=development webpack --mode development",
     "prod": "cross-env NODE_ENV=production webpack --mode production && prettier --print-width=120 --parser html --write dist/*.html",
     "watch": "cross-env NODE_ENV=development webpack --mode development --watch",
-    "server-prod": "http-server ./dist"
+    "serv-prod": "http-server ./dist -g"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "breakpoint-sass": "^2.7.1",
     "html5-history-api": "^4.2.10",
+    "jquery": "^3.6.0",
     "normalize.css": "^8.0.1",
     "popper.js": "^1.16.1",
-    "vue": "^2.6.12"
+    "pretty-checkbox-vue": "^1.1.9",
+    "vue": "^2.6.12",
+    "vue-loading-overlay": "^3.4.2",
+    "vue-slider-component": "^3.2.11"
   },
   "devDependencies": {
+    "autoprefixer": "^10.2.5",
     "clean-webpack-plugin": "^3.0.0",
     "compression-webpack-plugin": "^7.1.2",
     "copy-webpack-plugin": "^8.1.1",
     "cross-env": "^7.0.3",
     "css-loader": "^5.2.4",
+    "cssnano": "^5.0.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
     "http-server": "^0.12.3",
     "mini-css-extract-plugin": "^1.5.0",
     "node-sass": "^5.0.0",
-    "postcss-font-base64": "^1.0.5",
     "postcss-loader": "^5.2.0",
     "prettier": "^2.2.1",
     "raw-loader": "^4.0.2",
@@ -38,6 +43,7 @@
     "style-loader": "^2.0.0",
     "svg-sprite-html-webpack": "^2.3.0",
     "svg-spritemap-webpack-plugin": "^3.9.1",
+    "terser-webpack-plugin": "^5.1.1",
     "vue-loader": "^15.9.6",
     "vue-template-compiler": "^2.6.12",
     "webpack": "^5.35.1",
