@@ -79,7 +79,8 @@ const config = {
         test: /\.(css|sass|scss)$/,
         include: [
           path.resolve(__dirname, "src/scss"),
-          path.resolve(__dirname, "src/vue-components")
+          path.resolve(__dirname, "src/vue-components"),
+		  path.resolve(__dirname, 'node_modules'),
         ],
         use: [
           {
