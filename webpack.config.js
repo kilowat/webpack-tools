@@ -36,7 +36,6 @@ const htmlPlugins = generateHtmlPlugins("./src/html/views");
 const config = {
   entry: {
     main: ["./src/js/main.js", "./src/scss/main.scss"],
-    home: ["./src/js/home.js", "./src/scss/home.scss"]
   },
   output: {
     filename: "./js/[name].bundle.js",
@@ -104,6 +103,12 @@ const config = {
           },
           {
             loader: "sass-loader",
+			options: {
+              additionalData: `
+                @import "./src/scss/_variables.scss";
+                @import "~breakpoint-sass";
+              `
+            }
           }
         ]
       },
