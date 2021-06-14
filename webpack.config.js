@@ -178,7 +178,7 @@ if (!isDev) {
     new CompressionPlugin({
       filename: "[path][base].gz",
       algorithm: 'gzip',
-      test: /\.js$|\.css$$/,
+      test: /\.js$|\.svg$|\.css$$/,
       threshold: 10240,
       minRatio: 1
     }));
