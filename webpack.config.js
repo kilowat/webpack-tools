@@ -39,8 +39,13 @@ const config = {
   },
   output: {
     filename: "./js/[name].bundle.js",
-    //publicPath : `/local/templates/${templateName}/assets/dist/`,
     clean: true,
+    //Ниже настройки для cms,
+    //Путь куда билдить файлы в шаблон CMS
+    //publicPath : `/local/templates/${templateName}/assets/dist/`,
+    //Создёт чанк с названием префикс_Хеш, для формирования Preload Link.
+    //Нужен php скрипт, который по префиксу name будет получить путь до чанка и в head вставлять preload ссылку до чанка.
+    //chunkFilename: 'js/[name]_[contenthash].js',
   },
   devtool: isDev ? "source-map" : false,
   mode: isDev ? "development": "production",
