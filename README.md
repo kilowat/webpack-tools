@@ -1,4 +1,5 @@
 # Сборка webpack для простой верстки.
+### Для сборки спрайтов нужно выполнить run prod.
 ## Команды:
 + npm run dev - development
 + npm run prod - production
