@@ -48,19 +48,18 @@ const config = {
     //chunkFilename: 'js/[name]_[contenthash].js',
   },
   devtool: isDev ? "source-map" : false,
-  mode: isDev ? "development": "production",
+  mode: isDev ? "development" : "production",
   optimization: {
     minimize: !isDev,
     runtimeChunk: 'single',
     minimizer: [
-      new TerserPlugin(
-        {
-          extractComments: true,
-          terserOptions: {
-            sourceMap: isDev,
-          },
-        }
-    )],
+      new TerserPlugin({
+        extractComments: true,
+        terserOptions: {
+          sourceMap: isDev,
+        },
+      })
+    ],
   },
   resolve: {
     extensions: ['.js', '.vue'],
@@ -70,14 +69,11 @@ const config = {
     }
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.vue$/,
-        use: [
-          {
-            loader: 'vue-loader'
-          }
-        ],
+        use: [{
+          loader: 'vue-loader'
+        }],
         include: path.resolve(__dirname, "src/vue-components")
       },
       {
@@ -85,10 +81,9 @@ const config = {
         include: [
           path.resolve(__dirname, "src/scss"),
           path.resolve(__dirname, "src/vue-components"),
-		  path.resolve(__dirname, 'node_modules'),
+          path.resolve(__dirname, 'node_modules'),
         ],
-        use: [
-          {
+        use: [{
             loader: MiniCssExtractPlugin.loader,
           },
           {
@@ -101,15 +96,14 @@ const config = {
             loader: "postcss-loader",
             options: {
               postcssOptions: {
-                plugins: [,
-                ],
+                plugins: [, ],
                 sourceMap: isDev,
               },
             },
           },
           {
             loader: "sass-loader",
-	     options: {
+            options: {
               additionalData: `
                 @import "./src/scss/_variables.scss";
                 @import "~breakpoint-sass";
@@ -146,8 +140,7 @@ const config = {
       filename: "css/[name].bundle.css",
     }),
     new CopyWebpackPlugin({
-      patterns: [
-        {
+      patterns: [{
           from: "./src/fonts",
           to: "./fonts"
         },
@@ -169,13 +162,11 @@ const config = {
 };
 
 if (!isDev) {
-  config.module.rules.push(
-    {
-      test: /\.svg$/,
-      include: path.resolve(__dirname, "src/svgicons/"),
-      use: SvgSpriteHtmlWebpackPlugin.getLoader(),
-    }
-  );	
+  config.module.rules.push({
+    test: /\.svg$/,
+    include: path.resolve(__dirname, "src/svgicons/"),
+    use: SvgSpriteHtmlWebpackPlugin.getLoader(),
+  });
   config.plugins.push(
     new CompressionPlugin({
       filename: "[path][base].gz",
@@ -184,14 +175,14 @@ if (!isDev) {
       threshold: 10240,
       minRatio: 1
     }));
-	
-	config.plugins.push(
-		new SVGSpritemapPlugin('./src/svgicons/**/*.svg', {
-		  output: {
-			filename: svgPath,
-		  }
-		})
-	);
+
+  config.plugins.push(
+    new SVGSpritemapPlugin('./src/svgicons/**/*.svg', {
+      output: {
+        filename: svgPath,
+      }
+    })
+  );
 }
 
 module.exports = (env, argv) => {
