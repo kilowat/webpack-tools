@@ -109,7 +109,7 @@ const config = {
           },
           {
             loader: "sass-loader",
-			options: {
+	     options: {
               additionalData: `
                 @import "./src/scss/_variables.scss";
                 @import "~breakpoint-sass";
@@ -122,11 +122,6 @@ const config = {
         test: /\.html$/,
         include: path.resolve(__dirname, "src/html/includes"),
         use: ["raw-loader"]
-      },
-      {
-        test: /\.svg$/,
-        include: path.resolve(__dirname, "src/svgicons/"),
-        use: SvgSpriteHtmlWebpackPlugin.getLoader(),
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -147,11 +142,6 @@ const config = {
   },
   plugins: [
     new VueLoaderPlugin(),
-    new SVGSpritemapPlugin('./src/svgicons/**/*.svg', {
-      output: {
-        filename: svgPath,
-      }
-    }),
     new MiniCssExtractPlugin({
       filename: "css/[name].bundle.css",
     }),
@@ -179,6 +169,13 @@ const config = {
 };
 
 if (!isDev) {
+  config.module.rules.push(
+    {
+      test: /\.svg$/,
+      include: path.resolve(__dirname, "src/svgicons/"),
+      use: SvgSpriteHtmlWebpackPlugin.getLoader(),
+    }
+  );	
   config.plugins.push(
     new CompressionPlugin({
       filename: "[path][base].gz",
@@ -187,6 +184,14 @@ if (!isDev) {
       threshold: 10240,
       minRatio: 1
     }));
+	
+	config.plugins.push(
+		new SVGSpritemapPlugin('./src/svgicons/**/*.svg', {
+		  output: {
+			filename: svgPath,
+		  }
+		})
+	);
 }
 
 module.exports = (env, argv) => {
