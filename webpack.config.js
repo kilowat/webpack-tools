@@ -77,6 +77,11 @@ const config = {
         include: path.resolve(__dirname, "src/vue-components")
       },
       {
+        test: /\.svg$/,
+        include: path.resolve(__dirname, "src/svgicons/"),
+        use: SvgSpriteHtmlWebpackPlugin.getLoader(),
+      },
+      {
         test: /\.(css|sass|scss)$/,
         include: [
           path.resolve(__dirname, "src/scss"),
@@ -139,6 +144,11 @@ const config = {
     new MiniCssExtractPlugin({
       filename: "css/[name].bundle.css",
     }),
+    new SVGSpritemapPlugin('./src/svgicons/**/*.svg', {
+      output: {
+        filename: svgPath,
+      }
+    }),
     new CopyWebpackPlugin({
       patterns: [{
           from: "./src/fonts",
@@ -162,11 +172,6 @@ const config = {
 };
 
 if (!isDev) {
-  config.module.rules.push({
-    test: /\.svg$/,
-    include: path.resolve(__dirname, "src/svgicons/"),
-    use: SvgSpriteHtmlWebpackPlugin.getLoader(),
-  });
   config.plugins.push(
     new CompressionPlugin({
       filename: "[path][base].gz",
@@ -175,14 +180,6 @@ if (!isDev) {
       threshold: 10240,
       minRatio: 1
     }));
-
-  config.plugins.push(
-    new SVGSpritemapPlugin('./src/svgicons/**/*.svg', {
-      output: {
-        filename: svgPath,
-      }
-    })
-  );
 }
 
 module.exports = (env, argv) => {
